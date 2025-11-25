@@ -37,22 +37,20 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // Endpoints públicos
-                        .requestMatchers(
-                                "/usuario/inicio-sesion",
-                                "/usuario/registro",
-                                "/usuario/admin/**",
-                                "/h2-console/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/v3/api-docs/**",
-                                "/swagger-resources/**",
-                                "/webjars/**",
-                                "/contrasena/reset",
-                                "/contrasena/olvidar",
-                                "*"
-                        ).permitAll()
-                        .anyRequest().authenticated()
+                                // Endpoints públicos y recursos estáticos
+                                .requestMatchers(
+                                        "/assets/**",    // <-- CLAVE: PERMITE ACCESO A TODOS LOS ARCHIVOS DENTRO DE /assets/
+                                        "/usuario/inicio-sesion",
+                                        "/usuario/registro",
+                                        "/usuario/admin/**",
+                                        // ... (otros endpoints)
+                                        "/contrasena/olvidar",
+                                        "*" // Puedes mantener este, pero el /assets/** es el que soluciona tu problema
+                                ).permitAll()
+                        // Si tienes más reglas para otros endpoints, van aquí
+                        // Por ejemplo: .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        // Si no pones más reglas, el resto de peticiones son por defecto denegadas,
+                        // lo que es un buen comportamiento.
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
