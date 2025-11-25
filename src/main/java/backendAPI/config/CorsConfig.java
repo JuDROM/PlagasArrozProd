@@ -13,7 +13,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Aplica a todos los endpoints
-                        .allowedOrigins("*") // el origen de tu frontend
+                        .allowedOrigins("http://localhost:3000", "https://plagasarrozprod.onrender.com/*", "https://plagasarrozprod.onrender.com:8080/*") // el origen de tu frontend
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
